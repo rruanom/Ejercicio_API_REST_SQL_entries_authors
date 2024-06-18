@@ -1,14 +1,30 @@
-//const {Pool} = require('pg');
-const queries = require('../queries/entries.queries'); // Queries SQL
+const queries = require('../queries/authors.queries'); // Queries SQL
 const pool = require('../config/db_pgsql');
 
 
 // GET
-const getEntriesByEmail = async (email) => {
+const getAllAuthors = async () => {
     let client, result;
     try {
         client = await pool.connect(); // Espera a abrir conexion
-        const data = await client.query(queries.getEntriesByEmail, [email])
+        const data = await client.query(queries.getAllAuthors)
+        result = data.rows
+    } catch (err) {
+        console.log(err);
+        throw err;
+    } finally {
+        client.release();
+    }
+    return result
+}
+
+//GET
+
+const getAuthorByEmail = async (email) => {
+    let client, result;
+    try {
+        client = await pool.connect(); // Espera a abrir conexion
+        const data = await client.query(queries.getAuthorByEmail, [email])
         result = data.rows
 
     } catch (err) {
@@ -20,29 +36,14 @@ const getEntriesByEmail = async (email) => {
     return result
 }
 
-// GET
-const getAllEntries = async () => {
-    let client, result;
-    try {
-        client = await pool.connect(); // Espera a abrir conexion
-        const data = await client.query(queries.getAllEntries)
-        result = data.rows
-    } catch (err) {
-        console.log(err);
-        throw err;
-    } finally {
-        client.release();
-    }
-    return result
-}
+//Post
 
-// CREATE
-const createEntry = async (entry) => {
-    const { title, content, email, category } = entry;
+const createAuthor = async (author) => {
+    const { name, surname, email, img } = author;
     let client, result;
     try {
         client = await pool.connect(); // Espera a abrir conexion
-        const data = await client.query(queries.createEntry, [title, content, email, category])
+        const data = await client.query(queries.createAuthor, [name, surname, email, img])
         result = data.rowCount
     } catch (err) {
         console.log(err);
@@ -53,12 +54,33 @@ const createEntry = async (entry) => {
     return result
 }
 
-// DELETE
-const deleteEntry = async (title) => {
+const updateAuthor = async (author) => {
+    const { name, surname, email, image, old_email } = author;
+    let client, result;
+    try {
+        client = await pool.connect(); // Espera a abrir la conexión
+        const data = await client.query(queries.updateAuthor, [
+            name,
+            surname,
+            email,
+            image,
+            old_email
+        ]);
+        result = data.rowCount;
+    } catch (err) {
+        console.error('Error al actualizar el autor:', err);
+        throw err;
+    } finally {
+        if (client) client.release();
+    }
+    return result;
+}
+
+const deleteAuthor = async (email) => {
     let client, result;
     try {
         client = await pool.connect(); // Espera a abrir conexion
-        const data = await client.query(queries.deleteEntry,[title])
+        const data = await client.query(queries.deleteAuthor,[email])
         result = data
     } catch (err) {
         console.log(err);
@@ -69,51 +91,9 @@ const deleteEntry = async (title) => {
     return result
 }
 
-//UPDATE
-
-const updateEntry = async (entry) => {
-    const { title, content, date, email, category, old_title } = entry;
-    let client, result;
-    try {
-        client = await pool.connect(); // Espera a abrir conexion
-        const data = await client.query(queries.updateEntry, [
-            title,
-            content,
-            date,
-            email,
-            category,
-            old_title
-        ])
-        result = data.rowCount
-    } catch (err) {
-        console.log(err);
-        throw err;
-    } finally {
-        client.release();
-    }
-    return result
-}
-
-const entries = {
-    getEntriesByEmail,
-    getAllEntries,
-    createEntry,
-    deleteEntry,
-    updateEntry
-}
-
-module.exports = entries;
-
-
 // Pruebas
-
-   /*   getEntriesByEmail("birja@thebridgeschool.es")
-    .then(data=>console.log(data)) 
- */
-
-
-/*getAllEntries()
-.then(data=>console.log(data))*/
+/* getAuthorByEmail('alejandru@thebridgeschool.es')
+    .then(data=>console.log(data))  */
 
 
 
@@ -134,20 +114,28 @@ createEntry(newEntry)
     email: "guillermu@thebridgeschool.es",
     category: "sucesos"
     old_title: "El titulo antiguo a cambiar"
-}   
+}   */
 
     
 
-let updatedEntry = {
-    title: "Back 2",
-    content: "La venganza del elefante y la ballena",
-    date: '2024-6-17',
-    email: "guillermu@thebridgeschool.es",
-    category: "sucesos",
-    old_title: "Estamos de lunes de Back"
+/* let updatedAuthor = {
+    name: "Stephu",
+    surname: "Perumon",
+    email: "steph@lacomidadeperumola.com",
+    image: "ejemploImagen",
+    old_email: "jabier@thebridgeschool.es"
 }   
+updateAuthor(updatedAuthor)
+    .then(data=> console.log(data)) */
 
-updateEntry(updatedEntry)
-    .then(data=> console.log(data))
+//deleteAuthor("muchelle@thebridgeschool.es").then(data => console.log(data));
 
-    */
+const authors= {
+    getAllAuthors,
+    getAuthorByEmail,
+    createAuthor,
+    updateAuthor,
+    deleteAuthor
+}
+
+module.exports = authors;

@@ -1,4 +1,4 @@
-const queries = {
+const db_queries_entries = {
     getEntriesByEmail: `
     SELECT 
         e.title,
@@ -36,7 +36,11 @@ const queries = {
         id_author=(SELECT id_author FROM authors WHERE email=$4), 
         category= $5
 	WHERE 
-        title=$6`
+        title=$6`,
+    deleteEntry: `DELETE FROM 
+        entries
+    WHERE
+        title = $1`
 };
 
-module.exports = queries;
+module.exports = db_queries_entries;

@@ -13,16 +13,19 @@ app.use(morgan(':method :url :status :param[id] - :response-time ms :body'));
 //Rutas
 // Rutas
 const entriesRoutes = require("./routes/entries.routes")
+const authorsRoutes = require("./routes/authors.routes")
 
 app.use(express.json()); // Habilito recepción de JSON en servidor
 
-app.get("/", (req, res) => {
+
+/* app.get("/", (req, res) => {
   res.send("Hello World!");
-});
+}); */
 
 // Rutas
 //API
 app.use('/api/entries',entriesRoutes);
+app.use('/api/authors',authorsRoutes);
 
 app.use(error404);// middleware gestion de 404
 

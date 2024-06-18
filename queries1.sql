@@ -49,6 +49,12 @@ VALUES
 -- Buscar entries por email usuario
 SELECT * FROM entries WHERE id_author=(SELECT id_author FROM authors WHERE email='alejandru@thebridgeschool.es');
 
+--Borrar entries por titulo
+DELETE FROM 
+  entries
+WHERE
+  title = 'Back 3'
+
 
 -- Buscar datos por email de usuario y cruzar datos
 SELECT e.title,e.content,e.date,e.category,a.name,a.surname,a.image
@@ -82,3 +88,32 @@ UPDATE public.entries
     category='Sucesos'
 	WHERE 
   title = 'Estamos de lunes de Back';
+
+  -- Buscar todos los datos la tabla authors
+  SELECT 
+    *
+  FROM 
+    authors
+
+  -- Buscar los datos de un autor por un email
+  select 
+	*
+from
+	authors
+where 
+	email = 'alejandru@thebridgeschool.es'
+
+-- Mandar un autor por post
+insert into
+	authors (name, surname, email, image)
+values
+	('Robertu', 'DockerLover', 'r@roberto.com', 'https://randomuser.me/api/portraits/thumb/men/75.jpg')
+-- Modificar un autor
+UPDATE public.authors
+	SET 
+    name = 'Robertu', 
+    surname='ReShUlOn', 
+	  email='primiko@loko.como', 
+    image='https://randomuser.me/api/portraits/thumb/men/75.jpg'
+	WHERE 
+  	email = 'muchelle@thebridgeschool.es';	
