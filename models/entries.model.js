@@ -1,14 +1,7 @@
-const {Pool} = require('pg');
-const queries = require('../queries/entries.queries.js'); // Queries SQL
-//const pool = require('../config/db_pgsql');
+//const {Pool} = require('pg');
+const queries = require('../queries/entries.queries'); // Queries SQL
+const pool = require('../config/db_pgsql');
 
-const pool = new Pool({
-    host: 'localhost',
-    user: 'postgres',
-    port: '5432',
-    database: 'postgres',
-    password: '123456'
-});
 
 // GET
 const getEntriesByEmail = async (email) => {
@@ -100,8 +93,8 @@ module.exports = entries;
 
 // Pruebas
 
-/*     getEntriesByEmail("birja@thebridgeschool.es")
-    .then(data=>console.log(data)) */
+     getEntriesByEmail("birja@thebridgeschool.es")
+    .then(data=>console.log(data)) 
 
 
 

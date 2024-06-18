@@ -78,8 +78,9 @@ const updateEntry = async (req, res) => {
             const response = await entry.updateEntry(modifiedEntry);
             res.status(201).json({
                 items_updated: response,
-                data: modifiedEntry,
+                data: modifiedEntry, 
             });
+            console.log(`se ha modificado la entry ${modifiedEntry.title}`)
         } catch (error) {
             res.status(500).json({ error: "Error en la BBDD" });
         }

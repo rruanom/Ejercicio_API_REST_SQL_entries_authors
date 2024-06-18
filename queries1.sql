@@ -21,9 +21,7 @@ CREATE TABLE entries (
 -- Modificar la columna de title para hacerla unique
 ALTER TABLE 
   entries 
-ADD CONSTRAINT 
-  unique_title 
-  UNIQUE 
+ADD UNIQUE 
     (title);
 
 -- Insertar datos en tabla authors
