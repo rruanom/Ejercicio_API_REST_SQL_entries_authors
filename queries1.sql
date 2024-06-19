@@ -117,3 +117,9 @@ UPDATE public.authors
     image='https://randomuser.me/api/portraits/thumb/men/75.jpg'
 	WHERE 
   	email = 'muchelle@thebridgeschool.es';	
+
+-- Borrar un autor por mail
+DELETE FROM 
+  authors
+WHERE
+  email = 'albertu@thebridgeschool.es'

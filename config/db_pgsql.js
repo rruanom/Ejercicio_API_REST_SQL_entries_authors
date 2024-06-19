@@ -9,11 +9,13 @@ const {Pool} = require('pg');
 }); */
 
 const pool = new Pool({
-    host: 'dpg-cpor3iqju9rs738umkjg-a',
+    host: 'dpg-cpor3iqju9rs738umkjg-a.frankfurt-postgres.render.com',
     user: 'demo_node_sql_user',
+    password: 'J6dJ1UoHwACz5LmInmhS26WlTXWcJypg',
+    database: 'demo_NODE_SQL',
     port: '5432',
-    database: 'postgres://demo_node_sql_user:J6dJ1UoHwACz5LmInmhS26WlTXWcJypg@dpg-cpor3iqju9rs738umkjg-a.frankfurt-postgres.render.com/demo_node_sql',
-    password: 'J6dJ1UoHwACz5LmInmhS26WlTXWcJypg'
+    ssl: {
+        rejectUnauthorized: false
+    }
 });
-
 module.exports = pool;
