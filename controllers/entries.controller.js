@@ -16,7 +16,6 @@ const getEntries = async (req, res) => {
         res.status(500).json({ "error": "error en la BBDD" }); // [] con las entries encontradas
 
     }
-    console.log(entries)
 }
 
 //createEntry
@@ -98,7 +97,6 @@ const deleteEntry = async (req, res) => {
         res.status(500).json({ "error": "error en la BBDD" }); // [] con las entries encontradas
 
     }
-    console.log(entries)
 }
 
 module.exports = {
