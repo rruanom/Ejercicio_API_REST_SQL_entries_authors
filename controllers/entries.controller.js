@@ -1,8 +1,13 @@
 const entry = require('../models/entries.model'); // Importar el modelo de la BBDD
+const { validationResult } = require("express-validator");
 
 // GET http://localhost:3000/api/entries --> ALL
 // GET http://localhost:3000/api/entries?email=hola@gmail.com --> por email
 const getEntries = async (req, res) => {
+    const errors = validationResult(req);
+    if (!errors.isEmpty()) {
+        return res.status(400).json({ errors: errors.array() });
+    }
     let entries;
     try {
         if (req.query.email) {
@@ -28,6 +33,10 @@ const getEntries = async (req, res) => {
 
 // Crear entry por email
 const createEntry = async (req, res) => {
+    const errors = validationResult(req);
+    if (!errors.isEmpty()) {
+        return res.status(400).json({ errors: errors.array() });
+    }
     const newEntry = req.body; // {title,content,email,category}
     if (
         "title" in newEntry &&
@@ -64,6 +73,10 @@ const createEntry = async (req, res) => {
 }  */
 
 const updateEntry = async (req, res) => {
+    const errors = validationResult(req);
+    if (!errors.isEmpty()) {
+        return res.status(400).json({ errors: errors.array() });
+    }
     const modifiedEntry = req.body; // {title,content,date,email,category,old_title}
     if (
         "title" in modifiedEntry &&
@@ -90,6 +103,10 @@ const updateEntry = async (req, res) => {
 
 //Borrar un entry por titulo
 const deleteEntry = async (req, res) => {
+    const errors = validationResult(req);
+    if (!errors.isEmpty()) {
+        return res.status(400).json({ errors: errors.array() });
+    }
     try {
         entries = await entry.deleteEntry(req.query.title);
         res.status(200).json({"exito" : `Se ha borrado la entry: "${req.query.title}"`}); // [] con las entries encontradas

@@ -2,11 +2,13 @@ const express = require('express');
 // Rutas de productos
 const entriesController = require("../controllers/entries.controller");
 const router = express.Router();
+const checkApiKey = require('../middlewares/auth_api_keys');
+const { validateCreateEntries, validateGetEntries, validateDeleteEntry, validateUpdateEntry } = require("../validators/entries.validator");
 
-router.get('/', entriesController.getEntries);
-router.post('/', entriesController.createEntry);
-router.put('/', entriesController.updateEntry);
-router.delete('/', entriesController.deleteEntry);
+router.get('/', checkApiKey, validateGetEntries, entriesController.getEntries);
+router.post('/', checkApiKey, validateCreateEntries, entriesController.createEntry);
+router.put('/', checkApiKey, validateUpdateEntry, entriesController.updateEntry);
+router.delete('/', checkApiKey,validateDeleteEntry, entriesController.deleteEntry);
 
 module.exports = router;
 

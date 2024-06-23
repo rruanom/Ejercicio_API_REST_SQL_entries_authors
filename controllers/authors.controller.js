@@ -1,24 +1,31 @@
 const author = require('../models/authors.model'); // Importar el modelo de la BBDD
-
+const { validationResult } = require("express-validator");
 
 const getAuthors = async (req, res) => {
     let authors;
     try {
-        if (req.query.email) {
-            authors = await author.getAuthorByEmail(req.query.email);
+        if (req.query.email || req.query.email == "") {
+             const errors = validationResult(req);
+            if (!errors.isEmpty()) {
+                return res.status(400).json({ errors: errors.array() });
+            }
+           authors = await authors.getAuthorsByEmail(req.query.email);
+        } else {
+            authors = await authors.getAllAuthors();
         }
-        else {
-            authors = await author.getAllAuthors();
-        }
-        res.status(200).json(authors); // [] con las entries encontradas
-    } catch {
-        res.status(500).json({ "error": "error en la BBDD" }); // [] con las entries encontradas
-
+        res.status(200).json(authors); // [] con los authors encontrados
+    } catch (error) {
+        res.status(500).json({ error: "Error en la BBDD" });
     }
 };
 
 const createAuthor = async (req, res) => {
     const newEntry = req.body; // {name, surname, email, img}
+    const errors = validationResult(req);
+    if (!errors.isEmpty()) {
+        return res.status(400).json({ errors: errors.array() });
+    }
+
     if (
         "name" in newEntry &&
         "surname" in newEntry &&
@@ -40,6 +47,11 @@ const createAuthor = async (req, res) => {
 };
 
 const updateAuthor = async (req, res) => {
+    const errors = validationResult(req);
+    if (!errors.isEmpty()) {
+        return res.status(400).json({ errors: errors.array() });
+    }
+
     const modifiedAuthor = req.body; // {name, surname, email, image, old_email}
     if (
         "name" in modifiedAuthor &&
@@ -64,6 +76,11 @@ const updateAuthor = async (req, res) => {
 };
 
 const deleteAuthor = async (req, res) => {
+    const errors = validationResult(req);
+    if (!errors.isEmpty()) {
+        return res.status(400).json({ errors: errors.array() });
+    }
+
     let authors;
     try {
         authors = await author.deleteAuthor(req.query.email);

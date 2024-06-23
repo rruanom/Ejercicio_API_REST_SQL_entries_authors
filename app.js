@@ -14,8 +14,10 @@ app.use(morgan(':method :url :status :param[id] - :response-time ms :body'));
 // Rutas
 const entriesRoutes = require("./routes/entries.routes")
 const authorsRoutes = require("./routes/authors.routes")
+const checkApiKey = require("./middlewares/auth_api_keys");
 
 app.use(express.json()); // Habilito recepción de JSON en servidor
+app.use(express.urlencoded({ extended: true }));
 
 
 /* app.get("/", (req, res) => {
@@ -28,6 +30,8 @@ app.use('/api/entries',entriesRoutes);
 app.use('/api/authors',authorsRoutes);
 
 app.use(error404);// middleware gestion de 404
+app.use('/api/authors', checkApiKey ,authorsRoutes)
+app.use('/api/entries', checkApiKey ,entriesRoutes);
 
 app.listen(port, () => {
   console.log(`Example app listening on http://localhost:${port}`);
